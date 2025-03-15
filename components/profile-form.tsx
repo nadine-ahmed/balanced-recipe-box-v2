@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { useAuth } from "@/contexts/auth-context"
 import { supabase } from "@/lib/supabase"
 
@@ -40,11 +40,7 @@ export function ProfileForm() {
 
         if (error) {
           console.error("Error fetching profile:", error)
-          toast({
-            title: "Error",
-            description: "Failed to load profile. Please try again.",
-            variant: "destructive",
-          })
+          toast.error("Failed to load profile. Please try again.")
         } else if (data) {
           setProfile(data)
         }
@@ -73,16 +69,9 @@ export function ProfileForm() {
     const { error } = await supabase.from("profiles").upsert(updates)
 
     if (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to update profile. Please try again.")
     } else {
-      toast({
-        title: "Success",
-        description: "Profile updated successfully.",
-      })
+      toast.success("Profile updated successfully.")
     }
     setLoading(false)
   }

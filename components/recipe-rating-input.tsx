@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Star } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { getSupabase } from "@/lib/supabase"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { Button } from "@/components/ui/button"
 
 const supabase = getSupabase()
@@ -68,20 +68,12 @@ export function RecipeRatingInput({ recipeId, initialRating, initialRatingCount,
 
   const handleRatingSubmit = async () => {
     if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to rate recipes",
-        variant: "destructive",
-      })
+      toast.error("Please sign in to rate recipes")
       return
     }
 
     if (rating === 0) {
-      toast({
-        title: "Rating required",
-        description: "Please select a rating before submitting",
-        variant: "destructive",
-      })
+      toast.error("Please select a rating before submitting")
       return
     }
 
@@ -105,20 +97,13 @@ export function RecipeRatingInput({ recipeId, initialRating, initialRatingCount,
         setRatingCount(new_total_ratings)
         onRatingSubmit(new_average_rating, new_total_ratings)
 
-        toast({
-          title: "Rating submitted",
-          description: "Thank you for rating this recipe!",
-        })
+        toast.success("Thank you for rating this recipe!")
       } else {
         throw new Error("Unexpected response from submit_rating function")
       }
     } catch (error) {
       console.error("Error submitting rating:", error)
-      toast({
-        title: "Error",
-        description: "Failed to submit rating. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to submit rating. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -141,9 +126,8 @@ export function RecipeRatingInput({ recipeId, initialRating, initialRatingCount,
             disabled={hasRated}
           >
             <Star
-              className={`w-6 h-6 ${
-                value <= rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"
-              }`}
+              className={`w-6 h-6 ${value <= rating ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"
+                }`}
             />
           </button>
         ))}

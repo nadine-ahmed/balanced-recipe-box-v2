@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { getRecipe } from "@/lib/recipes"
 import type { Recipe } from "@/types/recipe"
-import { useToast } from "@/components/ui/use-toast"
+import toast from "react-hot-toast"
 import { Button } from "@/components/ui/button"
 
 interface IngredientGroup {
@@ -14,12 +14,11 @@ interface IngredientGroup {
 }
 
 export default function RecipeDetailsPage({ params }: { params: { id: string } }) {
-  const [recipe, setRecipe] = useState<Recipe | null>(null)
+  const [recipe, setRecipe] = useState<Recipe | any>(null)
   const [ingredientGroups, setIngredientGroups] = useState<IngredientGroup[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set())
-  const { toast } = useToast()
 
   useEffect(() => {
     fetchRecipeData()
@@ -57,11 +56,7 @@ export default function RecipeDetailsPage({ params }: { params: { id: string } }
     } catch (err) {
       console.error("Error fetching recipe data:", err)
       setError(err instanceof Error ? err.message : "Failed to load recipe data")
-      toast({
-        title: "Error",
-        description: "Failed to load recipe data. Please try again.",
-        variant: "destructive",
-      })
+      toast.error('Failed to load recipe data. Please try again.')
     } finally {
       setLoading(false)
     }

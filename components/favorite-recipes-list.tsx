@@ -8,7 +8,7 @@ import { Bookmark } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { getSupabase } from "@/lib/supabase"
 import { useState, useEffect } from "react"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 
 interface SavedRecipe {
   id: string
@@ -46,11 +46,7 @@ export function FavoriteRecipesList() {
 
       if (error) {
         console.error("Error fetching favorite recipes:", error)
-        toast({
-          title: "Error",
-          description: "Failed to fetch your favorite recipes.",
-          variant: "destructive",
-        })
+        toast.error("Failed to fetch your favorite recipes.")
         return
       }
 
@@ -67,11 +63,7 @@ export function FavoriteRecipesList() {
       setSavedRecipes(processedRecipes)
     } catch (error) {
       console.error("Unexpected error fetching favorite recipes:", error)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred while fetching your favorite recipes.",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred while fetching your favorite recipes.")
     } finally {
       setLoading(false)
     }

@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -24,39 +24,20 @@ export default function SignInPage() {
       const { error, data } = await signIn(email, password)
       if (error) {
         if (error.message === "Invalid login credentials") {
-          toast({
-            title: "Error",
-            description: "Invalid email or password. Please try again.",
-            variant: "destructive",
-          })
+          toast.error("Invalid email or password. Please try again.")
         } else if (error.message === "Email not confirmed") {
           setShowResendConfirmation(true)
-          toast({
-            title: "Error",
-            description: "Please confirm your email address before signing in.",
-            variant: "destructive",
-          })
+          toast.error("Please confirm your email address before signing in.")
         } else {
-          toast({
-            title: "Error",
-            description: error.message,
-            variant: "destructive",
-          })
+          toast.error(error.message)
         }
       } else {
-        toast({
-          title: "Success",
-          description: "Signed in successfully.",
-        })
+        toast.success("Signed in successfully.")
         router.push("/")
       }
     } catch (error) {
       console.error("Unexpected error during sign in:", error)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
@@ -66,58 +47,32 @@ export default function SignInPage() {
     try {
       const { error } = await resendConfirmationEmail(email)
       if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to resend confirmation email. Please try again.",
-          variant: "destructive",
-        })
+        toast.error("Failed to resend confirmation email. Please try again.")
       } else {
-        toast({
-          title: "Success",
-          description: "Confirmation email sent. Please check your inbox.",
-        })
+        toast.success("Confirmation email sent. Please check your inbox.")
       }
     } catch (error) {
       console.error("Error resending confirmation email:", error)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred. Please try again.")
     }
   }
 
   const handleResetPassword = async () => {
     if (!email) {
-      toast({
-        title: "Error",
-        description: "Please enter your email address to reset your password.",
-        variant: "destructive",
-      })
+      toast.error("Please enter your email address to reset your password.")
       return
     }
 
     try {
       const { error } = await resetPassword(email)
       if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to send password reset email. Please try again.",
-          variant: "destructive",
-        })
+        toast.error("Failed to send password reset email. Please try again.")
       } else {
-        toast({
-          title: "Success",
-          description: "Password reset email sent. Please check your inbox.",
-        })
+        toast.success("Password reset email sent. Please check your inbox.")
       }
     } catch (error) {
       console.error("Error resetting password:", error)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred. Please try again.")
     }
   }
 

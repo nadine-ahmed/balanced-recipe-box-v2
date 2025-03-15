@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -26,31 +26,17 @@ export default function SignUpPage() {
       const { error, data } = await signUp(email, password, username)
       if (error) {
         if (error.message.includes("duplicate key value")) {
-          toast({
-            title: "Error",
-            description: "An account with this email already exists. Please sign in instead.",
-            variant: "destructive",
-          })
+          toast.error("An account with this email already exists. Please sign in instead.")
+
         } else {
-          toast({
-            title: "Error",
-            description: error.message,
-            variant: "destructive",
-          })
+          toast.error(error.message)
         }
       } else {
-        toast({
-          title: "Success",
-          description: "Account created successfully. Please check your email for verification.",
-        })
+        toast.success("Account created successfully. Please check your email for verification.")
         router.push("/auth/signin")
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred. Please try again.")
     } finally {
       setIsSubmitting(false)
     }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { getSupabase } from "@/lib/supabase"
 import type { Recipe, Ingredient, Category } from "@/types/recipe"
 import { RecipeForm } from "@/components/RecipeForm"
@@ -57,7 +57,7 @@ export default function EditRecipePage({ params }: { params: { id: string } }) {
         await updateRecipeCategories(updatedRecipe.id, recipe_categories)
       }
 
-      toast({ title: "Success", description: "Recipe updated successfully" })
+      toast.success("Recipe updated successfully")
       router.push("/admin/recipes")
     } catch (err) {
       console.error("Error updating recipe:", err)

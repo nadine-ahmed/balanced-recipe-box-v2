@@ -16,9 +16,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { useToast } from "@/components/ui/use-toast"
 import { supabase } from "@/lib/supabaseClient"
 import { deleteRecipe } from "@/lib/actions"
+import toast from 'react-hot-toast'
 
 export default function AdminRecipesPage() {
   const [recipes, setRecipes] = useState([])
@@ -32,7 +32,6 @@ export default function AdminRecipesPage() {
   const [totalRecipes, setTotalRecipes] = useState(0)
   const pageSize = 10
   const RECIPES_PER_PAGE = pageSize // Added for consistency with updated pagination
-  const { toast } = useToast()
 
   useEffect(() => {
     fetchRecipes(currentPage)
@@ -75,9 +74,9 @@ export default function AdminRecipesPage() {
         ...recipe,
         categories: recipe.categories
           ? recipe.categories.map((c) => ({
-              id: c.category.id,
-              name: c.category.name,
-            }))
+            id: c.category.id,
+            name: c.category.name,
+          }))
           : [],
       }))
 
@@ -104,10 +103,7 @@ export default function AdminRecipesPage() {
       const result = await deleteRecipe(recipeToDelete.id)
 
       if (result.success) {
-        toast({
-          title: "Recipe deleted",
-          description: `"${recipeToDelete.title}" has been successfully deleted.`,
-        })
+        toast.success(`"${recipeToDelete.title}" has been successfully deleted.`)
         // Remove the recipe from the local state to update the UI immediately
         setRecipes(recipes.filter((recipe) => recipe.id !== recipeToDelete.id))
 
@@ -119,18 +115,10 @@ export default function AdminRecipesPage() {
           fetchRecipes(currentPage)
         }
       } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to delete recipe",
-          variant: "destructive",
-        })
+        toast.error(result.error || "Failed to delete recipe")
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred")
     } finally {
       setIsDeleting(false)
       setIsDialogOpen(false)

@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { getSupabase } from "@/lib/supabase"
 import { Trash2 } from "lucide-react"
 
@@ -127,7 +127,7 @@ export default function AddRecipePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) {
-      toast({ title: "Error", description: "You must be logged in to create a recipe", variant: "destructive" })
+      toast.error("You must be logged in to create a recipe")
       return
     }
     setLoading(true)
@@ -163,15 +163,11 @@ export default function AddRecipePage() {
         throw new Error("Recipe was not created successfully")
       }
 
-      toast({ title: "Success", description: "Recipe created successfully" })
+      toast.success("Recipe created successfully")
       router.push("/admin/recipes")
     } catch (error) {
       console.error("Error creating recipe:", error)
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred")
     } finally {
       setLoading(false)
     }

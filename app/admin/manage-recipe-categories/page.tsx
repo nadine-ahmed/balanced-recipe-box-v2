@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { getSupabase } from "@/lib/supabase"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -61,11 +61,7 @@ export default function ManageRecipeCategoriesPage() {
 
     if (error) {
       console.error("Error fetching recipes:", error)
-      toast({
-        title: "Error",
-        description: "Failed to fetch recipes. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch recipes. Please try again.")
     } else {
       setRecipes(data || [])
     }
@@ -78,11 +74,7 @@ export default function ManageRecipeCategoriesPage() {
 
     if (error) {
       console.error("Error fetching categories:", error)
-      toast({
-        title: "Error",
-        description: "Failed to fetch categories. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch categories. Please try again.")
     } else {
       setCategories(data || [])
     }
@@ -107,18 +99,11 @@ export default function ManageRecipeCategoriesPage() {
 
       if (error) throw error
 
-      toast({
-        title: "Success",
-        description: "Recipe categories updated successfully.",
-      })
+      toast.success("Recipe categories updated successfully.")
       reset()
     } catch (error) {
       console.error("Error updating recipe categories:", error)
-      toast({
-        title: "Error",
-        description: "Failed to update recipe categories. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to update recipe categories. Please try again.")
     } finally {
       setLoading(false)
     }

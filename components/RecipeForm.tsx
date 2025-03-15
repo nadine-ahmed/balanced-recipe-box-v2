@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import type { Recipe, Category } from "@/types/recipe"
 import { CategorySelector } from "@/components/CategorySelector"
 import { ImageUploader } from "@/components/ImageUploader"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 
 interface RecipeFormProps {
   recipe?: Recipe
@@ -49,17 +49,10 @@ export function RecipeForm({ recipe, categories, onSubmit }: RecipeFormProps) {
     setLoading(true)
     try {
       await onSubmit(formData)
-      toast({
-        title: "Success",
-        description: `Recipe ${recipe ? "updated" : "created"} successfully.`,
-      })
+      toast.success(`Recipe ${recipe ? "updated" : "created"} successfully.`)
     } catch (error) {
       console.error("Error submitting form:", error)
-      toast({
-        title: "Error",
-        description: `Failed to ${recipe ? "update" : "create"} recipe. Please try again.`,
-        variant: "destructive",
-      })
+      toast.error(`Failed to ${recipe ? "update" : "create"} recipe. Please try again.`)
     } finally {
       setLoading(false)
     }

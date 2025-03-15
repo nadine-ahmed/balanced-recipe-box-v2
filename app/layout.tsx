@@ -5,7 +5,7 @@ import "./globals.css"
 import { SiteHeader } from "@/components/site-header"
 import { AuthProvider } from "@/contexts/auth-context"
 import { SupabaseProvider } from "@/contexts/supabase-context"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "react-hot-toast"
 
 const firaSans = Fira_Sans({
   subsets: ["latin"],
@@ -41,7 +41,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-
-import './globals.css'

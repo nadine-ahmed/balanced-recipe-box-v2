@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { getSupabase } from "@/lib/supabase"
 
 export default function AdminLoginPage() {
@@ -43,18 +43,11 @@ export default function AdminLoginPage() {
         throw new Error("Access denied. Admin privileges required.")
       }
 
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      })
+      toast.success("Logged in successfully")
       router.push("/admin/dashboard")
     } catch (error) {
       console.error("Error:", error)
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to log in",
-        variant: "destructive",
-      })
+      toast.error(error instanceof Error ? error.message : "Failed to log in")
     } finally {
       setLoading(false)
     }

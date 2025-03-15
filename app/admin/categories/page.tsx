@@ -4,13 +4,14 @@ import { useState, useEffect } from "react"
 import { Plus, Edit, Trash2, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { toast } from "@/components/ui/use-toast"
+// import { useToast } from "@/hooks/use-toast"
 import { getSupabase } from "@/lib/supabase"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { Spinner } from "@/components/ui/spinner"
+import toast from "react-hot-toast"
 
 interface Category {
   id: string
@@ -33,6 +34,7 @@ export default function AdminCategoriesPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  // const { toast } = useToast()
 
   useEffect(() => {
     fetchCategories()
@@ -45,11 +47,7 @@ export default function AdminCategoriesPage() {
 
     if (error) {
       console.error("Error fetching categories:", error)
-      toast({
-        title: "Error",
-        description: "Failed to fetch categories",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch categories")
     } else {
       setCategories(data || [])
     }
@@ -58,11 +56,7 @@ export default function AdminCategoriesPage() {
 
   const handleCreateCategory = async () => {
     if (!newCategory.name) {
-      toast({
-        title: "Error",
-        description: "Category name is required",
-        variant: "destructive",
-      })
+      toast.error('Category name is required')
       return
     }
 
@@ -79,19 +73,12 @@ export default function AdminCategoriesPage() {
       if (error) {
         console.error("Supabase insert error:", error)
         if (error.code === "23505") {
-          toast({
-            title: "Error",
-            description: "A category with this name or slug already exists",
-            variant: "destructive",
-          })
+          toast.error('A category with this name or slug already exists')
         } else {
           throw error
         }
       } else if (data) {
-        toast({
-          title: "Success",
-          description: "Category created successfully",
-        })
+        toast.success('Category created successfully')
         setCategories([...categories, data[0]])
         setNewCategory({ name: "", slug: "" })
         setIsDialogOpen(false)
@@ -99,11 +86,7 @@ export default function AdminCategoriesPage() {
       }
     } catch (error) {
       console.error("Error creating category:", error)
-      toast({
-        title: "Error",
-        description: "Failed to create category. Please try again.",
-        variant: "destructive",
-      })
+      toast.error('Failed to create category. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
@@ -125,19 +108,12 @@ export default function AdminCategoriesPage() {
 
       if (error) {
         if (error.code === "23505") {
-          toast({
-            title: "Error",
-            description: "A category with this name or slug already exists",
-            variant: "destructive",
-          })
+          toast.error('A category with this name or slug already exists')
         } else {
           throw error
         }
       } else if (data) {
-        toast({
-          title: "Success",
-          description: "Category updated successfully",
-        })
+        toast.success('Category updated successfully')
         setCategories(categories.map((cat) => (cat.id === editingCategory.id ? data[0] : cat)))
         setEditingCategory(null)
         setIsDialogOpen(false)
@@ -145,11 +121,7 @@ export default function AdminCategoriesPage() {
       }
     } catch (error) {
       console.error("Error updating category:", error)
-      toast({
-        title: "Error",
-        description: "Failed to update category. Please try again.",
-        variant: "destructive",
-      })
+      toast.error('Failed to update category. Please try again.');
     } finally {
       setIsSubmitting(false)
     }
@@ -165,20 +137,12 @@ export default function AdminCategoriesPage() {
       if (error) {
         throw error
       }
-
-      toast({
-        title: "Success",
-        description: "Category deleted successfully",
-      })
+      toast.success('Category deleted successfully')
       setCategories(categories.filter((cat) => cat.id !== id))
       router.refresh()
     } catch (error) {
       console.error("Error deleting category:", error)
-      toast({
-        title: "Error",
-        description: "Failed to delete category. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to delete category. Please try again.")
     }
   }
 

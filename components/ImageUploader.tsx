@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Trash2 } from "lucide-react"
 import { getSupabase } from "@/lib/supabase"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 
 interface ImageUploaderProps {
   mainImageUrl: string | null
@@ -56,17 +56,10 @@ export function ImageUploader({
       const { data: urlData } = supabase.storage.from("recipe-images").getPublicUrl(data.path)
 
       onMainImageChange(urlData.publicUrl)
-      toast({
-        title: "Success",
-        description: "Image uploaded successfully",
-      })
+      toast.success("Image uploaded successfully")
     } catch (error) {
       console.error("Error uploading image:", error)
-      toast({
-        title: "Error",
-        description: "Failed to upload image. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to upload image. Please try again.")
     } finally {
       setUploading(false)
     }

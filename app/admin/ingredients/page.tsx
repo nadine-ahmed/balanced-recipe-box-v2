@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { getSupabase } from "@/lib/supabase"
 import { Check, ChevronsUpDown, Plus, Trash2, Edit } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -78,11 +78,7 @@ export default function AdminIngredientsPage() {
 
     if (error) {
       console.error("Error fetching recipes:", error)
-      toast({
-        title: "Error",
-        description: "Failed to fetch recipes. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch recipes. Please try again.")
     } else {
       setRecipes(data || [])
     }
@@ -96,11 +92,7 @@ export default function AdminIngredientsPage() {
 
     if (error) {
       console.error("Error fetching ingredient groups:", error)
-      toast({
-        title: "Error",
-        description: "Failed to fetch ingredient groups. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch ingredient groups. Please try again.")
       setIngredientGroups([])
     } else {
       setIngredientGroups(data || [])
@@ -136,16 +128,9 @@ export default function AdminIngredientsPage() {
 
     if (error) {
       console.error("Error deleting ingredient group:", error)
-      toast({
-        title: "Error",
-        description: "Failed to delete ingredient group. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to delete ingredient group. Please try again.")
     } else {
-      toast({
-        title: "Success",
-        description: "Ingredient group deleted successfully.",
-      })
+      toast.success("Ingredient group deleted successfully.")
       if (selectedRecipe) {
         fetchIngredientGroups(selectedRecipe)
       }
@@ -181,11 +166,7 @@ export default function AdminIngredientsPage() {
 
       if (error) throw error
 
-      toast({
-        title: "Success",
-        description: editingGroup ? "Ingredient group updated successfully." : "Ingredient group added successfully.",
-      })
-
+      toast.success(editingGroup ? "Ingredient group updated successfully." : "Ingredient group added successfully.")
       if (selectedRecipe) {
         fetchIngredientGroups(selectedRecipe)
       }
@@ -195,11 +176,7 @@ export default function AdminIngredientsPage() {
       reset({ recipeId: selectedRecipe || "", groupName: "", ingredients: "" })
     } catch (error) {
       console.error("Error adding/updating ingredient group:", error)
-      toast({
-        title: "Error",
-        description: "Failed to add/update ingredient group. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to add/update ingredient group. Please try again.")
     } finally {
       setLoading(false)
     }

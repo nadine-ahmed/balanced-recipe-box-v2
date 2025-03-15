@@ -7,7 +7,7 @@ import type { Category, RecipeCategory } from "@/types/recipe"
 import { Trash2 } from "lucide-react"
 import { getSupabase } from "@/lib/supabase"
 import { useEffect, useState } from "react"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 
 interface CategorySelectorProps {
   selectedCategories: RecipeCategory[]
@@ -26,11 +26,7 @@ export function CategorySelector({ selectedCategories, onChange }: CategorySelec
     const { data, error } = await supabase.from("categories").select("*").order("name")
     if (error) {
       console.error("Error fetching categories:", error)
-      toast({
-        title: "Error",
-        description: "Failed to load categories. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to load categories. Please try again.")
     } else {
       setCategories(data || [])
     }

@@ -5,7 +5,7 @@ import { Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/auth-context"
 import { supabase } from "@/lib/supabase"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface FavoriteButtonProps {
@@ -47,11 +47,7 @@ export function RecipeFavoriteButton({ recipeId, variant = "default" }: Favorite
 
   const toggleFavorite = async () => {
     if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to save recipes to favorites",
-        variant: "destructive",
-      })
+      toast.error("Please sign in to save recipes to favorites")
       return
     }
 
@@ -67,10 +63,7 @@ export function RecipeFavoriteButton({ recipeId, variant = "default" }: Favorite
         if (error) throw error
 
         setIsFavorite(false)
-        toast({
-          title: "Recipe removed",
-          description: "Recipe removed from favorites",
-        })
+        toast.success("Recipe removed from favorites")
       } else {
         const { error } = await supabase.from("recipe_favorites").insert({
           recipe_id: recipeId,
@@ -80,18 +73,11 @@ export function RecipeFavoriteButton({ recipeId, variant = "default" }: Favorite
         if (error) throw error
 
         setIsFavorite(true)
-        toast({
-          title: "Recipe saved",
-          description: "Recipe added to favorites",
-        })
+        toast.success("Recipe added to favorites")
       }
     } catch (error) {
       console.error("Error toggling favorite:", error)
-      toast({
-        title: "Error",
-        description: "Failed to update favorites. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to update favorites. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -104,9 +90,8 @@ export function RecipeFavoriteButton({ recipeId, variant = "default" }: Favorite
         size="icon"
         onClick={toggleFavorite}
         disabled={isLoading || !user}
-        className={`rounded-full ${
-          isFavorite ? "bg-red-500 hover:bg-red-600" : "bg-white hover:bg-gray-100"
-        } shadow-md`}
+        className={`rounded-full ${isFavorite ? "bg-red-500 hover:bg-red-600" : "bg-white hover:bg-gray-100"
+          } shadow-md`}
       >
         <Heart className={`w-4 h-4 ${isFavorite ? "fill-white text-white" : "text-gray-600"}`} />
       </Button>
@@ -122,9 +107,8 @@ export function RecipeFavoriteButton({ recipeId, variant = "default" }: Favorite
             size="icon"
             onClick={toggleFavorite}
             disabled={isLoading || !user}
-            className={`relative rounded-full p-2 transition-colors ${
-              isFavorite ? "bg-red-500 text-white hover:bg-red-600" : "bg-background hover:bg-muted"
-            }`}
+            className={`relative rounded-full p-2 transition-colors ${isFavorite ? "bg-red-500 text-white hover:bg-red-600" : "bg-background hover:bg-muted"
+              }`}
           >
             <Heart className={`w-5 h-5 ${isFavorite ? "fill-current" : ""}`} />
           </Button>

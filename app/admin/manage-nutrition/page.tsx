@@ -7,7 +7,7 @@ import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { toast } from "@/components/ui/use-toast"
+import toast from 'react-hot-toast'
 import { getSupabase } from "@/lib/supabase"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -62,11 +62,7 @@ export default function ManageNutritionPage() {
 
     if (error) {
       console.error("Error fetching recipes:", error)
-      toast({
-        title: "Error",
-        description: "Failed to fetch recipes. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to fetch recipes. Please try again.")
     } else {
       setRecipes(data || [])
     }
@@ -96,11 +92,6 @@ export default function ManageNutritionPage() {
         setValue("totalCarbohydrates", data.total_carbohydrates?.toString() || "")
         setValue("totalFats", data.total_fats?.toString() || "")
         setNutritionId(data.id)
-
-        toast({
-          title: "Nutrition Data Loaded",
-          description: "Existing nutrition data has been loaded for this recipe.",
-        })
       } else {
         // No existing data, reset form fields except recipe ID
         setValue("servingSize", "")
@@ -111,11 +102,7 @@ export default function ManageNutritionPage() {
         setNutritionId(null)
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to load nutrition data. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to load nutrition data. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -152,22 +139,15 @@ export default function ManageNutritionPage() {
         await fetchNutritionData(data.recipeId)
       }
 
-      toast({
-        title: "Success",
-        description: nutritionId
-          ? "Nutrition information updated successfully."
-          : "Nutrition information added successfully.",
-      })
+      toast.success(nutritionId
+        ? "Nutrition information updated successfully."
+        : "Nutrition information added successfully.")
 
       // Don't reset the form after successful submission
       // This allows the user to see what they just submitted
     } catch (error) {
       console.error("Error saving nutrition information:", error)
-      toast({
-        title: "Error",
-        description: "Failed to save nutrition information. Please try again.",
-        variant: "destructive",
-      })
+      toast.error("Failed to save nutrition information. Please try again.")
     } finally {
       setLoading(false)
     }
