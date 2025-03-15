@@ -25,7 +25,17 @@ export default function Home() {
       </div>
 
       {/* Categories */}
-      <CategoryPills />
+      <Suspense
+        fallback={
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-[4/5] rounded-lg bg-gray-100 animate-pulse" />
+            ))}
+          </div>
+        }
+      >
+        <CategoryPills />
+      </Suspense>
 
       {/* Recipe Grid */}
       <div className="mt-6">
